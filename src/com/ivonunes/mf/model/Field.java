@@ -1,5 +1,7 @@
 package com.ivonunes.mf.model;
 
+import com.ivonunes.mf.exception.ExplosionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,36 @@ public class Field {
     }
   }
 
+  boolean open(){
+    /*
+    Verify if the field is marked because you can only open a field
+    if the field is not marked, if user tried to open a mined field
+    it throws a new ExplosionException and if all neighbours are safe
+    he opens all the fields
+     */
+    if (!marked && !open ){
+      this.open = true;
+      if ( mine ){
+        throw new ExplosionException();
+      }
+      if (safeNeighbour()){
+        neighbours.forEach(n -> n.open());
+      }
+      return true;
+    }
+    return false;
+  }
 
+  boolean safeNeighbour(){
+    /*
+    Verify if the neighbours don't have mines and
+    returns true if they are clean
+     */
+    return neighbours.stream().noneMatch(n -> n.mine);
+  }
 
+  public boolean isMarked(){
+    return marked;
+  }
 
 }
