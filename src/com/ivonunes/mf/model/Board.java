@@ -2,6 +2,8 @@ package com.ivonunes.mf.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
 
 public class Board {
 
@@ -38,6 +40,12 @@ public class Board {
     }
   }
   private void generateMines() {
-
+    long activatedMines = 0;
+    Predicate<Field> mined = f -> f.isMined();
+    do {
+      activatedMines = fields.stream().filter(mined).count();
+      int randomNumber = 1;
+      fields.get(randomNumber).setMine();
+    }while(activatedMines<mines);
   }
 }

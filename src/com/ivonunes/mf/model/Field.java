@@ -90,6 +90,9 @@ public class Field {
   public boolean isMarked(){
     return marked;
   }
+  public boolean isMined(){
+    return mine;
+  }
 
   public boolean isOpen(){
     return open;
