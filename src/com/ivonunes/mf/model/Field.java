@@ -48,7 +48,7 @@ public class Field {
     return false;
   }
 
-  void changeMarked(){
+  public void changeMarked(){
     /*
     Function that will add the possibility to mark a field
     just like the mine swiper game when you think that is
@@ -125,6 +125,10 @@ public class Field {
     open = false;
     mine = false;
     marked = false;
+  }
+
+  public void setOpen(boolean open) {
+    this.open = open;
   }
 
   public String toString(){
