@@ -1,5 +1,6 @@
 package com.ivonunes.mf.model;
 
+import com.ivonunes.mf.exception.ExplosionException;
 import com.ivonunes.mf.model.Field;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,72 @@ public class FieldTest {
   void changeMarkedTestTrue(){
     field.changeMarked();
     assertTrue(field.isMarked());
+  }
+
+  @Test
+  void changeMarkedTestTwoTimes(){
+    field.changeMarked();
+    field.changeMarked();
+    assertFalse(field.isMarked());
+  }
+
+  @Test
+  void changeMarkedTestThreeTimes(){
+    field.changeMarked();
+    field.changeMarked();
+    field.changeMarked();
+    assertTrue(field.isMarked());
+  }
+
+  // Verify if the Open function is properly made
+  @Test
+  void openTestNotMinedNotMarked(){
+    assertTrue(field.open());
+  }
+
+  @Test
+  void openTestNotMinedIsMarked(){
+    field.changeMarked();
+    assertFalse(field.open());
+  }
+  @Test
+  void openTestMinedIsMarked(){
+    field.setMine();
+    field.changeMarked();
+    assertFalse(field.open());
+  }
+
+  @Test
+  void openTestMinedNotMarked(){
+    field.setMine();
+    assertThrows(ExplosionException.class, () -> {
+      field.open();
+    });
+  }
+
+  @Test
+  void testOpenWithNeighbours(){
+
+    Field neighbour1 = new Field(2,2);
+    Field neighbourOfneighbour1 = new Field(1,1);
+    neighbour1.addNeighbour(neighbourOfneighbour1);
+    field.addNeighbour(neighbour1);
+    field.open();
+    assertTrue(neighbour1.isOpen() && neighbourOfneighbour1.isOpen()
+                && field.isOpen());
+  }
+
+  @Test
+  void testOpenWithNeighboursWithMine(){
+
+    Field neighbour1 = new Field(2,2);
+    Field neighbourOfneighbour1 = new Field(1,1);
+    neighbour1.addNeighbour(neighbourOfneighbour1);
+    neighbourOfneighbour1.setMine();
+    field.addNeighbour(neighbour1);
+    field.open();
+    assertFalse(neighbour1.isOpen() && neighbourOfneighbour1.isOpen()
+      && field.isOpen());
   }
 
 }

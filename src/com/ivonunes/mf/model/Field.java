@@ -91,4 +91,49 @@ public class Field {
     return marked;
   }
 
+  public boolean isOpen(){
+    return open;
+  }
+
+  public void setMine() {
+    this.mine = true;
+  }
+
+  public int getLine() {
+    return line;
+  }
+
+  public int getColumn() {
+    return column;
+  }
+
+  boolean objectiveDone(){
+    boolean revealedField = !mine && open;
+    boolean protectedField = mine && marked;
+
+    return revealedField || protectedField;
+  }
+
+  long minesInTheNeighbourhood(){
+    return neighbours.stream().filter(v -> v.mine).count();
+  }
+
+  void reset(){
+    open = false;
+    mine = false;
+    marked = false;
+  }
+
+  public String toString(){
+    if (marked) {
+      return "x";
+    }else if (open && mine){
+      return "*";
+    }else if(open && minesInTheNeighbourhood() >0){
+      return Long.toString(minesInTheNeighbourhood());
+    }else if (open){
+      return " ";
+    }
+    return "?";
+  }
 }
